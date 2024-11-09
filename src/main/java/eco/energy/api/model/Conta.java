@@ -1,11 +1,12 @@
 package eco.energy.api.model;
+import eco.energy.api.dto.contaDto.DadosCadastroConta;
 import eco.energy.api.mes.Mes;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
-@Table(name = "conta")
+@Table(name = "Conta")
 @Entity(name = "Conta")
 @Getter
 @Setter
@@ -29,4 +30,10 @@ public class Conta {
  @NotNull(message = "O mês não pode ser nulo")
  @Enumerated(EnumType.STRING)
  private Mes mes;
+
+ public Conta(DadosCadastroConta dados) {
+  this.valorTotal = dados.valorTotal();
+  this.consumoKwh = dados.consumoKwh();
+  this.mes = dados.mes();
+ }
 }

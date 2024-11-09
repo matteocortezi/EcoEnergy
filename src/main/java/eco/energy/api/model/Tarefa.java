@@ -1,12 +1,12 @@
 package eco.energy.api.model;
-
+import eco.energy.api.dto.tarefaDto.DadosCadastroTarefa;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-@Table(name = "tarefa")
+@Table(name = "Tarefa")
 @Entity(name = "Tarefa")
 @Getter
 @Setter
@@ -29,5 +29,11 @@ public class Tarefa {
 
     @NotNull(message = "O status não pode ser nulo")
     private Boolean status; // true para completada, false para não completada
+
+    public Tarefa(DadosCadastroTarefa dados){
+        this.nome = dados.nome();
+        this.descricao = dados.descricao();
+        this.status = dados.status();
+    }
 }
 
