@@ -1,15 +1,13 @@
 package eco.energy.api.controller;
-
-
 import eco.energy.api.dto.tarefaDto.DadosCadastroTarefa;
 import eco.energy.api.dto.tarefaDto.DadosListagemTarefa;
 import eco.energy.api.model.Tarefa;
 import eco.energy.api.repository.TarefaRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("tarefa")
@@ -22,7 +20,7 @@ public class TarefaController {
         tarefaRepository.save(new Tarefa(dados));
     }
     @GetMapping
-    public List<DadosListagemTarefa> listar(){
-        return tarefaRepository.findAll().stream().map(DadosListagemTarefa::new).toList();
+    public Page<DadosListagemTarefa> listar(Pageable paginacao){
+        return tarefaRepository.findAll(paginacao).map(DadosListagemTarefa::new);
     }
 }
