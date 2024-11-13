@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,10 +33,12 @@ public class ContaController {
         var conta = contaRepository.getReferenceById(dados.idConta());
         conta.atualizarInformacoes(dados);
     }
+    
     @DeleteMapping("/{id}")
     @Transactional
-    public void excluir(@PathVariable Long id){
+    public ResponseEntity excluir(@PathVariable Long id){
         contaRepository.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
