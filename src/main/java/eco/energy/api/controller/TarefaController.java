@@ -1,6 +1,7 @@
 package eco.energy.api.controller;
 import eco.energy.api.dto.tarefaDto.DadosAtualizacaoTarefa;
 import eco.energy.api.dto.tarefaDto.DadosCadastroTarefa;
+import eco.energy.api.dto.tarefaDto.DadosDetalhamentoTarefa;
 import eco.energy.api.dto.tarefaDto.DadosListagemTarefa;
 import eco.energy.api.model.Tarefa;
 import eco.energy.api.repository.TarefaRepository;
@@ -20,18 +21,20 @@ public class TarefaController {
     private TarefaRepository tarefaRepository;
 
     @PostMapping
-    public void cadastrar(@RequestBody @Valid DadosCadastroTarefa dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTarefa dados){
         tarefaRepository.save(new Tarefa(dados));
     }
     @GetMapping
-    public Page<DadosListagemTarefa> listar(@PageableDefault(size = 10, page = 0) Pageable paginacao){
-        return tarefaRepository.findAll(paginacao).map(DadosListagemTarefa::new);
+    public ResponseEntity<Page<DadosListagemTarefa>> listar(@PageableDefault(size = 10, page = 0) Pageable paginacao){
+        var page = tarefaRepository.findAll(paginacao).map(DadosListagemTarefa::new);
+        return ResponseEntity.ok(page);
     }
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoTarefa dados){
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoTarefa dados){
         var tarefa = tarefaRepository.getReferenceById(dados.idTarefa());
         tarefa.atualizarInformacoes(dados);
+        return ResponseEntity.ok(new DadosDetalhamentoTarefa(tarefa));
     }
     @DeleteMapping("/{id}")
     @Transactional

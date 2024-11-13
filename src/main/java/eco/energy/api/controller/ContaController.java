@@ -1,6 +1,7 @@
 package eco.energy.api.controller;
 import eco.energy.api.dto.contaDto.DadosAtualizacaoConta;
 import eco.energy.api.dto.contaDto.DadosCadastroConta;
+import eco.energy.api.dto.contaDto.DadosDetalhamentoConta;
 import eco.energy.api.dto.contaDto.DadosListagemConta;
 import eco.energy.api.model.Conta;
 import eco.energy.api.repository.ContaRepository;
@@ -20,18 +21,20 @@ public class ContaController {
     private ContaRepository contaRepository;
 
     @PostMapping
-    public void cadastrar(@RequestBody @Valid DadosCadastroConta dados){
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroConta dados){
         contaRepository.save(new Conta(dados));
     }
     @GetMapping
-    public Page<DadosListagemConta> listar(@PageableDefault(size = 10, page = 0) Pageable paginacao){
-        return contaRepository.findAll(paginacao).map(DadosListagemConta::new);
+    public ResponseEntity<Page<DadosListagemConta>> listar(@PageableDefault(size = 10, page = 0) Pageable paginacao){
+        var page = contaRepository.findAll(paginacao).map(DadosListagemConta::new);
+        return ResponseEntity.ok(page);
     }
     @PutMapping
     @Transactional
-    public void atualizar(@RequestBody @Valid DadosAtualizacaoConta dados){
+    public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoConta dados){
         var conta = contaRepository.getReferenceById(dados.idConta());
         conta.atualizarInformacoes(dados);
+        return ResponseEntity.ok(new DadosDetalhamentoConta(conta));
     }
     
     @DeleteMapping("/{id}")
