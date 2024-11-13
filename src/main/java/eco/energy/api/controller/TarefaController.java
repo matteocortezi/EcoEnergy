@@ -46,4 +46,9 @@ public class TarefaController {
         tarefaRepository.deleteById(id);
         return ResponseEntity.ok().build();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id){
+        var tarefa = tarefaRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoTarefa(tarefa));
+    }
 }

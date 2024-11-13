@@ -48,5 +48,12 @@ public class ContaController {
         contaRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/{id}")
+    public ResponseEntity detalhar(@PathVariable Long id){
+        var conta = contaRepository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosDetalhamentoConta(conta));
+    }
+
+
 
 }
