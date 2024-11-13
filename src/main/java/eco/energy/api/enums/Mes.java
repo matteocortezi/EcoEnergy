@@ -1,4 +1,4 @@
-package eco.energy.api.mes;
+package eco.energy.api.enums;
 
 public enum Mes {
     JANEIRO,

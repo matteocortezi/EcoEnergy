@@ -1,7 +1,7 @@
 package eco.energy.api.model;
 import eco.energy.api.dto.contaDto.DadosAtualizacaoConta;
 import eco.energy.api.dto.contaDto.DadosCadastroConta;
-import eco.energy.api.mes.Mes;
+import eco.energy.api.enums.Mes;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
