@@ -32,4 +32,9 @@ public class TarefaController {
         var tarefa = tarefaRepository.getReferenceById(dados.idTarefa());
         tarefa.atualizarInformacoes(dados);
     }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id){
+        tarefaRepository.deleteById(id);
+    }
 }

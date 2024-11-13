@@ -32,4 +32,10 @@ public class ContaController {
         var conta = contaRepository.getReferenceById(dados.idConta());
         conta.atualizarInformacoes(dados);
     }
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void excluir(@PathVariable Long id){
+        contaRepository.deleteById(id);
+    }
+
 }
