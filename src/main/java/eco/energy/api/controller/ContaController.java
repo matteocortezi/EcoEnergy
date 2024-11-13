@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("conta")
@@ -21,8 +22,12 @@ public class ContaController {
     private ContaRepository contaRepository;
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroConta dados){
-        contaRepository.save(new Conta(dados));
+    @Transactional
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroConta dados, UriComponentsBuilder uriBuilder) {
+        var conta = new Conta(dados);
+        contaRepository.save(conta);
+        var uri = uriBuilder.path("/conta/{id}").buildAndExpand(conta.getIdConta()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoConta(conta));
     }
     @GetMapping
     public ResponseEntity<Page<DadosListagemConta>> listar(@PageableDefault(size = 10, page = 0) Pageable paginacao){

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("tarefa")
@@ -21,8 +22,11 @@ public class TarefaController {
     private TarefaRepository tarefaRepository;
 
     @PostMapping
-    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTarefa dados){
-        tarefaRepository.save(new Tarefa(dados));
+    public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroTarefa dados, UriComponentsBuilder uriBuilder) {
+        var tarefa = new Tarefa(dados);
+        tarefaRepository.save(tarefa);
+        var uri = uriBuilder.path("/tarefa/{id}").buildAndExpand(tarefa.getIdTarefa()).toUri();
+        return ResponseEntity.created(uri).body(new DadosDetalhamentoTarefa(tarefa));
     }
     @GetMapping
     public ResponseEntity<Page<DadosListagemTarefa>> listar(@PageableDefault(size = 10, page = 0) Pageable paginacao){
