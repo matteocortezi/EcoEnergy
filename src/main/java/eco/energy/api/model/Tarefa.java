@@ -1,6 +1,8 @@
 package eco.energy.api.model;
+import eco.energy.api.dto.tarefaDto.DadosAtualizacaoTarefa;
 import eco.energy.api.dto.tarefaDto.DadosCadastroTarefa;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -12,13 +14,13 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "idTarefa")
 public class Tarefa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tarefa", nullable = false)
-    private Long id;
+    private Long idTarefa;
 
     @NotBlank(message = "O nome da tarefa não pode ser vazio")
     @Size(min = 3, max = 100, message = "O nome da tarefa deve ter entre 3 e 100 caracteres")
@@ -39,5 +41,17 @@ public class Tarefa {
         this.descricao = dados.descricao();
         this.status = dados.status();
     }
-}
+    public void atualizarInformacoes(@Valid DadosAtualizacaoTarefa dados) {
+        if (dados.nome() != null) {
+            this.nome = dados.nome();
+        }
+        if (dados.descricao() != null) {
+            this.descricao = dados.descricao();
+        }
+        if (dados.status() != null) {
+            this.status = dados.status();
+
+        }}}
+
+
 
