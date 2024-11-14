@@ -1,5 +1,4 @@
 package eco.energy.api.controller;
-
 import eco.energy.api.dto.usuarioDto.DadosAutenticacao;
 import eco.energy.api.infra.security.DadosTokenJWT;
 import eco.energy.api.infra.security.TokenService;
