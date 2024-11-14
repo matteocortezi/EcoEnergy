@@ -37,6 +37,12 @@ public class Conta {
  @Column(name = "mes_conta", nullable = false)
  private Mes mes;
 
+ @ManyToOne
+ @JoinColumn(name = "Usuario_id_usuario", nullable = false)
+ private Usuario usuario;
+
+
+
  public Conta(DadosCadastroConta dados) {
   this.valorTotal = dados.valorTotal();
   this.consumoKwh = dados.consumoKwh();

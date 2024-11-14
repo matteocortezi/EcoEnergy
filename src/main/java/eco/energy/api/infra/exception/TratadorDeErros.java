@@ -1,4 +1,4 @@
-package eco.energy.api.infra;
+package eco.energy.api.infra.exception;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,14 +14,14 @@ public class TratadorDeErros {
     public ResponseEntity tratarErro404(){
         return ResponseEntity.notFound().build();
     }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Object> tratarErro400(MethodArgumentNotValidException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro de validação dos argumentos: " + ex.getBindingResult().getAllErrors());
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> tratarErroGenerico(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro interno do servidor: " + ex.getMessage());
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> tratarErroArgumentoInvalido(MethodArgumentNotValidException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro de validação dos argumentos: " + ex.getBindingResult().getAllErrors());
     }
 
     @ExceptionHandler(ConstraintViolationException.class)

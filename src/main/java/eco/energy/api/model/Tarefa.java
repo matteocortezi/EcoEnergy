@@ -36,6 +36,10 @@ public class Tarefa {
     @Column(name = "status_tarefa", nullable = true)
     private Boolean status; // true para completada, false para não completada
 
+    @ManyToOne
+    @JoinColumn(name = "Usuario_id_usuario", nullable = false)
+    private Usuario usuario;
+
     public Tarefa(DadosCadastroTarefa dados){
         this.nome = dados.nome();
         this.descricao = dados.descricao();
